@@ -4,132 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🏴‍☠️ Scratch Pirate Escape</title>
-    
-    <!-- Tailwind CSS for UI Layout -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- FontAwesome for Icons -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts: Mitr for Thai readability -->
-    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Google Fonts (Cute Style) -->
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --block-motion: #3b82f6; /* Blue */
-            --block-motion-hover: #2563eb;
-            --block-control: #f59e0b; /* Amber */
-            --block-control-hover: #d97706;
-            --block-condition: #d946ef; /* Fuchsia */
-            --block-condition-hover: #c026d3;
+            --block-motion: #4C97FF;
+            --block-control: #FFAB19;
+            --block-condition: #E58137;
         }
-
+        
         body {
-            font-family: 'Mitr', sans-serif;
-            background-color: #0f172a; /* slate-900 */
+            font-family: 'Mali', cursive;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             overflow: hidden;
-            user-select: none;
+            touch-action: none;
         }
-
-        /* Glassmorphism utilities */
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-        }
-        
-        .glass-premium {
-            background: linear-gradient(145deg, rgba(15,23,42,0.8) 0%, rgba(30,41,59,0.9) 100%);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Background Animation */
-        .ocean-bg {
-            background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
-            position: relative;
-        }
-        .ocean-bg::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.1) 0%, transparent 50%);
-            animation: pulse-glow 8s infinite alternate;
-        }
-
-        @keyframes pulse-glow {
-            0% { opacity: 0.5; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.2); }
-        }
-
-        /* Block Styles (Scratch-like) */
-        .s-block {
-            position: relative;
-            padding: 10px 16px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            color: white;
-            font-weight: 500;
-            font-size: 0.95rem;
-            cursor: pointer;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.2);
-            transition: transform 0.1s, box-shadow 0.1s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .s-block:active {
-            transform: translateY(4px);
-            box-shadow: 0 0 0 rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.2);
-        }
-
-        .s-block.motion { background-color: var(--block-motion); }
-        .s-block.motion:hover { background-color: var(--block-motion-hover); }
-        
-        .s-block.control { background-color: var(--block-control); }
-        .s-block.control:hover { background-color: var(--block-control-hover); }
-        
-        .s-block.condition { background-color: var(--block-condition); }
-        .s-block.condition:hover { background-color: var(--block-condition-hover); }
-
-        .s-block .delete-btn {
-            background: rgba(0,0,0,0.2);
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-        .s-block .delete-btn:hover { background: rgba(239, 68, 68, 0.8); }
-        
-        /* Workspace integration */
-        #workspace-dropzone .s-block {
-            margin-bottom: -2px; /* Interlocking effect */
-            border-radius: 4px;
-            border-top-left-radius: 12px;
-            border-bottom-right-radius: 12px;
-        }
-
-        /* Map Paths */
-        .map-path {
-            stroke-dasharray: 10;
-            animation: dash 1.5s linear infinite;
-        }
-        @keyframes dash {
-            to { stroke-dashoffset: -20; }
-        }
-
-        .island-node { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .island-node:hover:not(.locked) {
-            transform: scale(1.15) translateY(-5px);
-            box-shadow: 0 10px 25px rgba(250, 204, 21, 0.5);
-            z-index: 10;
-        }
-        .island-node.locked { filter: grayscale(100%) opacity(0.7); cursor: not-allowed; }
 
         /* Modal Animation */
         @keyframes popIn {
@@ -137,267 +31,269 @@
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
         .modal-animate { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        
+        /* Block Animations */
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .block-enter { animation: bounceIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+        /* Clouds */
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+            animation: float-cloud linear infinite;
+            pointer-events: none;
+            z-index: 5;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .cloud::before, .cloud::after {
+            content: ''; position: absolute; background: inherit; border-radius: 50%;
+        }
+        @keyframes float-cloud {
+            from { transform: translateX(-200px); }
+            to { transform: translateX(120vw); }
+        }
+
+        /* Island Nodes on Map */
+        .island-node {
+            transition: all 0.2s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+        .island-node:not(.locked):hover {
+            transform: scale(1.15) translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            cursor: pointer;
+        }
+        .locked { filter: grayscale(100%); opacity: 0.7; cursor: not-allowed; }
+
+        /* Scratch Blocks */
+        .s-block {
+            padding: 12px 16px; margin-bottom: 6px; border-radius: 12px;
+            color: white; font-weight: 600; font-size: 1rem; cursor: pointer;
+            box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1);
+            display: flex; align-items: center; justify-content: space-between;
+            transition: transform 0.1s;
+            position: relative;
+        }
+        .s-block:active { transform: translateY(2px); box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.1); }
+        .s-block.motion { background-color: var(--block-motion); }
+        .s-block.control { background-color: var(--block-control); }
+        .s-block.condition { background-color: var(--block-condition); }
+        .s-block.event { background-color: #FFBF00; cursor: default; }
+
+        .workspace-block {
+            border-top-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        
+        /* Delete Button */
+        .delete-btn {
+            background: rgba(0,0,0,0.2); width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.2s;
+        }
+        .s-block:hover .delete-btn { opacity: 1; }
+        .delete-btn:hover { background: #ef4444; }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 1rem;
+        }
     </style>
 </head>
-<body class="text-slate-100 h-screen w-screen flex flex-col ocean-bg">
+<body class="text-slate-800 antialiased h-screen w-screen flex flex-col">
 
-    <!-- Screen: Splash -->
-    <div id="screen-splash" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/90 backdrop-blur-md transition-opacity duration-500">
-        <div class="text-center animate-[float_3s_ease-in-out_infinite] mb-8">
-            <i class="fa-solid fa-skull-crossbones text-6xl text-amber-400 mb-4 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]"></i>
-            <h1 class="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-yellow-500 drop-shadow-lg mb-2 uppercase tracking-wider">
-                Pirate Escape
-            </h1>
-            <p class="text-xl text-sky-300 font-light tracking-wide">ออกเรือผจญภัย เขียนโค้ด เก็บสมบัติ</p>
-        </div>
+    <div id="app" class="relative w-full h-full">
         
-        <div class="flex flex-col gap-4 w-64">
-            <button onclick="Game.showScreen('map')" class="py-4 px-6 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-full font-bold text-xl shadow-[0_0_20px_rgba(245,158,11,0.4)] transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 text-white">
-                <i class="fa-solid fa-play"></i> เริ่มผจญภัย
-            </button>
-            <button onclick="Game.showScreen('teacher')" class="py-3 px-6 bg-slate-700 hover:bg-slate-600 rounded-full font-semibold text-slate-200 transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
-                <i class="fa-solid fa-chalkboard-user"></i> โหมดคุณครู
-            </button>
-        </div>
-    </div>
-
-    <!-- Screen: Teacher Settings -->
-    <div id="screen-teacher" class="absolute inset-0 z-40 hidden flex items-center justify-center bg-slate-900/95 backdrop-blur-sm">
-        <div class="glass-premium p-8 rounded-3xl w-[90%] max-w-md modal-animate">
-            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-700">
-                <i class="fa-solid fa-gear text-2xl text-sky-400"></i>
-                <h2 class="text-2xl font-bold">การตั้งค่าห้องเรียน</h2>
+        <!-- ================= SPLASH SCREEN ================= -->
+        <div id="screen-splash" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-sky-400 to-blue-700">
+            <div class="cloud w-32 h-10 top-[20%] opacity-60" style="animation-duration: 30s; left: -10%;"><div class="w-16 h-16 -top-8 left-4"></div><div class="w-12 h-12 -top-4 left-16"></div></div>
+            <div class="cloud w-40 h-12 top-[60%] opacity-40" style="animation-duration: 45s; left: 20%;"><div class="w-20 h-20 -top-10 left-5"></div><div class="w-16 h-16 -top-6 left-20"></div></div>
+            
+            <div class="text-center animate-bounce mb-8">
+                <i class="fa-solid fa-ship text-7xl text-amber-400 drop-shadow-lg mb-4"></i>
+                <h1 class="text-5xl md:text-7xl font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] leading-tight">
+                    Scratch<br>Pirate Escape
+                </h1>
+                <p class="text-xl text-amber-200 mt-4 font-semibold drop-shadow-md">ออกเรือผจญภัย เขียนโค้ด เก็บสมบัติ</p>
             </div>
             
-            <div class="space-y-5">
-                <div>
-                    <label class="flex justify-between text-slate-300 mb-2">
-                        <span>เวลาทำภารกิจ (นาที)</span>
-                        <span id="time-val" class="text-amber-400 font-bold">10</span>
-                    </label>
-                    <input type="range" id="setting-time" min="5" max="20" step="5" value="10" class="w-full accent-sky-500" oninput="document.getElementById('time-val').innerText=this.value">
-                </div>
-                
-                <div>
-                    <label class="block text-slate-300 mb-2">ระดับความยาก</label>
-                    <select id="setting-diff" class="w-full bg-slate-800 border border-slate-600 text-white rounded-lg p-3 focus:outline-none focus:border-sky-500">
-                        <option value="easy">ง่าย (มีคำใบ้)</option>
-                        <option value="medium" selected>ปานกลาง (มาตรฐาน)</option>
-                        <option value="hard">ยาก (ซ่อนแถบเครื่องมือบางส่วน)</option>
-                    </select>
-                </div>
-                
-                <label class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg cursor-pointer hover:bg-slate-800 transition">
-                    <input type="checkbox" id="setting-sfx" checked class="w-5 h-5 accent-sky-500 rounded">
-                    <span class="text-slate-200">เปิดเสียงดนตรีและเอฟเฟกต์</span>
-                </label>
+            <div class="flex flex-col gap-4 w-64">
+                <button onclick="Game.showScreen('map')" class="py-4 bg-amber-500 hover:bg-amber-400 text-white rounded-full text-xl font-bold shadow-[0_6px_0_#b45309] active:shadow-[0_0px_0_#b45309] active:translate-y-[6px] transition-all">
+                    <i class="fa-solid fa-play mr-2"></i> เริ่มผจญภัย
+                </button>
+                <button onclick="Game.showScreen('teacher')" class="py-3 bg-slate-600 hover:bg-slate-500 text-white rounded-full text-lg font-bold shadow-[0_6px_0_#334155] active:shadow-[0_0px_0_#334155] active:translate-y-[6px] transition-all">
+                    <i class="fa-solid fa-gear mr-2"></i> โหมดคุณครู
+                </button>
             </div>
+        </div>
+
+        <!-- ================= MAP SCREEN ================= -->
+        <div id="screen-map" class="absolute inset-0 z-40 hidden bg-sky-900 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PHBhdGggZD0iTTAgMjBRMTAgMTAgMjAgMjBUMzAgMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvc3ZnPg==')] overflow-hidden">
             
-            <div class="mt-8 grid grid-cols-2 gap-3">
-                <button onclick="Game.saveSettings()" class="py-3 bg-sky-500 hover:bg-sky-400 text-white rounded-xl font-bold transition">บันทึก</button>
-                <button onclick="Game.showScreen('splash')" class="py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-bold transition">ยกเลิก</button>
-                <button onclick="Game.resetData()" class="col-span-2 py-3 bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white border border-red-500/30 rounded-xl font-bold transition">ล้างข้อมูลนักเรียนทั้งหมด</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screen: Map Selection -->
-    <div id="screen-map" class="absolute inset-0 z-30 hidden flex flex-col bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')] bg-[#d4b886]">
-        <!-- Top HUD -->
-        <div class="p-4 flex justify-between items-center bg-slate-900/80 backdrop-blur-md border-b border-amber-500/30 shadow-lg">
-            <div class="flex items-center gap-2">
-                <button onclick="Game.showScreen('splash')" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-slate-700 transition">
-                    <i class="fa-solid fa-house text-slate-300"></i>
-                </button>
-                <span class="font-bold text-lg text-amber-400 ml-2">แผนที่เกาะขุมทรัพย์</span>
-            </div>
-            <div class="flex gap-4">
-                <div class="flex items-center gap-2 bg-slate-800/80 px-4 py-1.5 rounded-full border border-slate-600">
-                    <i class="fa-solid fa-heart text-red-500"></i>
-                    <span id="hud-lives" class="font-bold">3</span>
+            <!-- HUD -->
+            <div class="w-full p-4 flex justify-between items-start pointer-events-none z-20 absolute top-0 left-0 right-0">
+                <div class="flex gap-3">
+                    <div class="bg-black/40 backdrop-blur-md text-white px-4 py-2 rounded-full font-bold shadow-lg flex items-center gap-2 pointer-events-auto">
+                        <i class="fa-solid fa-heart text-red-500"></i> <span id="hud-lives">3</span>
+                    </div>
+                    <div class="bg-black/40 backdrop-blur-md text-white px-4 py-2 rounded-full font-bold shadow-lg flex items-center gap-2 pointer-events-auto">
+                        <i class="fa-solid fa-coins text-yellow-400"></i> <span id="hud-coins">0</span>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2 bg-slate-800/80 px-4 py-1.5 rounded-full border border-slate-600">
-                    <i class="fa-solid fa-coins text-yellow-400"></i>
-                    <span id="hud-coins" class="font-bold">0</span>
-                </div>
-                <div class="flex items-center gap-2 bg-slate-800/80 px-4 py-1.5 rounded-full border border-slate-600">
-                    <i class="fa-solid fa-star text-amber-400"></i>
-                    <span id="hud-stars" class="font-bold">0</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Interactive Map Canvas Area -->
-        <div class="flex-1 relative overflow-hidden flex items-center justify-center p-4">
-            <div class="relative w-full max-w-4xl aspect-[4/3] bg-[#e3c792] rounded-3xl shadow-[inset_0_0_50px_rgba(139,90,43,0.5),0_20px_50px_rgba(0,0,0,0.5)] border-[12px] border-[#8b5a2b] p-4">
-                
-                <!-- Compass Decoration -->
-                <div class="absolute bottom-6 left-6 text-[#8b5a2b] opacity-80 pointer-events-none">
-                    <i class="fa-regular fa-compass text-6xl"></i>
-                </div>
-
-                <!-- SVG Paths connecting islands -->
-                <svg class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 1;">
-                    <path d="M 15% 30% Q 30% 20% 50% 45% T 85% 75%" fill="transparent" stroke="#8b5a2b" stroke-width="4" stroke-dasharray="12,12" class="map-path opacity-50"/>
-                </svg>
-
-                <!-- Island Nodes -->
-                <!-- 1 -->
-                <button id="node-1" onclick="Game.startLevel(1)" class="island-node absolute top-[25%] left-[10%] w-16 h-16 rounded-full bg-emerald-500 border-4 border-white shadow-xl flex items-center justify-center text-2xl font-bold text-white z-10">1</button>
-                <div class="absolute top-[35%] left-[8%] text-[#8b5a2b] font-bold text-sm pointer-events-none">เกาะเริ่มต้น</div>
-                
-                <!-- 2 -->
-                <button id="node-2" onclick="Game.startLevel(2)" class="island-node locked absolute top-[40%] left-[45%] w-16 h-16 rounded-full bg-emerald-500 border-4 border-white shadow-xl flex items-center justify-center text-2xl font-bold text-white z-10">2</button>
-                <div class="absolute top-[52%] left-[42%] text-[#8b5a2b] font-bold text-sm pointer-events-none">วังวนปริศนา</div>
-
-                <!-- 3 -->
-                <button id="node-3" onclick="Game.startLevel(3)" class="island-node locked absolute top-[20%] left-[70%] w-16 h-16 rounded-full bg-emerald-500 border-4 border-white shadow-xl flex items-center justify-center text-2xl font-bold text-white z-10">3</button>
-                <div class="absolute top-[32%] left-[68%] text-[#8b5a2b] font-bold text-sm pointer-events-none">ดงฉลาม</div>
-
-                <!-- 4 -->
-                <button id="node-4" onclick="Game.startLevel(4)" class="island-node locked absolute top-[60%] left-[25%] w-16 h-16 rounded-full bg-emerald-500 border-4 border-white shadow-xl flex items-center justify-center text-2xl font-bold text-white z-10">4</button>
-                <div class="absolute top-[72%] left-[23%] text-[#8b5a2b] font-bold text-sm pointer-events-none">ซากเรือแตก</div>
-
-                <!-- 5 (Boss) -->
-                <button id="node-5" onclick="Game.startLevel(5)" class="island-node locked absolute top-[70%] left-[80%] w-20 h-20 rounded-xl bg-red-500 border-4 border-amber-400 shadow-[0_0_20px_rgba(239,68,68,0.6)] flex items-center justify-center text-3xl z-10">
-                    <i class="fa-solid fa-skull text-white"></i>
-                </button>
-                <div class="absolute top-[85%] left-[75%] text-[#8b5a2b] font-bold text-sm pointer-events-none text-center">ภูเขาไฟ<br>อัคนี</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screen: Main Game IDE -->
-    <div id="screen-game" class="absolute inset-0 z-20 hidden flex flex-col md:flex-row bg-slate-900">
-        
-        <!-- Left Pane: 7x5 Game Canvas Graphics -->
-        <div class="w-full md:w-3/5 lg:w-[65%] h-[50vh] md:h-full flex flex-col relative border-b md:border-b-0 md:border-r border-slate-700 bg-slate-900">
-            <!-- Header Level Info -->
-            <div class="p-4 bg-slate-950/80 border-b border-sky-500/20 flex justify-between items-center z-10 absolute top-0 left-0 right-0">
-                <div>
-                    <span class="text-amber-400 font-bold text-xs md:text-sm tracking-wider uppercase block mb-1">ปฏิบัติภารกิจ</span>
-                    <h3 class="text-lg md:text-xl font-extrabold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-ship text-sky-400"></i>
-                        <span id="game-level-title">ด่านที่ 1</span>
-                    </h3>
-                </div>
-                <button onclick="Game.showScreen('map')" class="px-3 py-2 md:px-4 md:py-2 bg-slate-800 hover:bg-slate-700 rounded-lg font-bold text-sm transition text-slate-200">
-                    <i class="fa-solid fa-compass mr-1"></i>ออก
+                <button onclick="Game.showScreen('splash')" class="bg-black/40 backdrop-blur-md text-white px-4 py-2 rounded-full font-bold shadow-lg hover:bg-black/60 pointer-events-auto">
+                    <i class="fa-solid fa-home"></i>
                 </button>
             </div>
 
-            <!-- Canvas Container -->
-            <div class="flex-1 flex items-center justify-center p-2 md:p-6 mt-16 md:mt-20">
-                <!-- Size locked to 7:5 aspect ratio -->
-                <canvas id="gameCanvas" width="700" height="500" class="w-full max-w-[700px] aspect-[7/5] rounded-xl shadow-2xl border-4 border-slate-700 bg-blue-900 object-contain"></canvas>
-            </div>
-        </div>
-        
-        <!-- Right Pane: Blockly-style Workspace -->
-        <div class="w-full md:w-2/5 lg:w-[35%] h-[50vh] md:h-full flex flex-col bg-slate-50">
-            
-            <!-- Workspace Controls -->
-            <div class="p-4 bg-white border-b border-slate-200 flex justify-between items-center shadow-sm z-10">
-                <h3 class="font-bold text-slate-700 flex items-center gap-2 text-lg">
-                    <i class="fa-solid fa-code text-sky-500"></i> พื้นที่เขียนโค้ด
-                </h3>
-                <div class="flex gap-2">
-                    <button onclick="BlockEngine.clearWorkspace()" class="w-10 h-10 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition flex items-center justify-center" title="ล้างโค้ด">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                    <button onclick="GameEngine.runCode()" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-bold shadow-md transition flex items-center gap-2">
-                        <i class="fa-solid fa-play"></i> รันโค้ด
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Toolbox & Editor Split -->
-            <div class="flex-1 flex overflow-hidden">
+            <!-- Map Content Container (Fixed structure to prevent collapsing) -->
+            <div class="w-full h-full flex flex-col items-center justify-center pt-20 pb-8 px-4">
+                <h2 class="text-3xl md:text-4xl text-white font-bold mb-6 drop-shadow-lg z-10 text-center w-full">แผนที่เกาะสมบัติ</h2>
                 
-                <!-- Palette (Toolbox) -->
-                <div class="w-[40%] bg-slate-100 border-r border-slate-200 p-3 overflow-y-auto">
-                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 pl-1">บล็อกคำสั่ง</div>
+                <!-- Map Area -->
+                <div class="relative w-full max-w-4xl h-[60vh] min-h-[350px] flex-shrink-0 bg-[#e3c792] rounded-3xl shadow-[inset_0_0_30px_rgba(139,90,43,0.5),0_20px_50px_rgba(0,0,0,0.5)] border-[8px] md:border-[12px] border-[#8b5a2b] overflow-hidden">
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMSIgZmlsbD0icmdiYSgwLDAsMCwwLjEpIi8+PC9zdmc+')] opacity-50"></div>
                     
-                    <div class="space-y-2">
+                    <!-- SVG Path Line -->
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none">
+                        <path d="M 15% 30% Q 30% 10% 50% 40% T 85% 70%" fill="none" stroke="rgba(139,90,43,0.4)" stroke-width="6" stroke-dasharray="10 10"/>
+                    </svg>
+
+                    <!-- Nodes -->
+                    <div id="node-1" class="island-node absolute left-[10%] top-[25%] w-14 h-14 md:w-16 md:h-16 bg-green-500 rounded-full border-4 border-white flex items-center justify-center text-xl md:text-2xl text-white font-bold" onclick="Game.startLevel(1)">1</div>
+                    <div id="node-2" class="island-node locked absolute left-[30%] top-[40%] w-14 h-14 md:w-16 md:h-16 bg-green-500 rounded-full border-4 border-white flex items-center justify-center text-xl md:text-2xl text-white font-bold" onclick="Game.startLevel(2)">2</div>
+                    <div id="node-3" class="island-node locked absolute left-[50%] top-[25%] w-14 h-14 md:w-16 md:h-16 bg-green-500 rounded-full border-4 border-white flex items-center justify-center text-xl md:text-2xl text-white font-bold" onclick="Game.startLevel(3)">3</div>
+                    <div id="node-4" class="island-node locked absolute left-[70%] top-[50%] w-14 h-14 md:w-16 md:h-16 bg-green-500 rounded-full border-4 border-white flex items-center justify-center text-xl md:text-2xl text-white font-bold" onclick="Game.startLevel(4)">4</div>
+                    <div id="node-5" class="island-node locked absolute left-[85%] top-[65%] w-16 h-16 md:w-20 md:h-20 bg-red-500 rounded-xl border-4 border-white flex items-center justify-center text-3xl md:text-4xl text-white font-bold shadow-[0_0_20px_rgba(239,68,68,0.6)]" onclick="Game.startLevel(5)">🏴‍☠️</div>
+                    
+                    <!-- Compass Decoration -->
+                    <div class="absolute bottom-4 left-4 w-16 h-16 md:w-24 md:h-24 opacity-70 pointer-events-none">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#8b5a2b" stroke-width="2"/>
+                            <path d="M50 5 L60 50 L50 95 L40 50 Z" fill="#8b5a2b"/>
+                            <path d="M5 50 L50 40 L95 50 L50 60 Z" fill="#8b5a2b"/>
+                            <circle cx="50" cy="50" r="10" fill="#e3c792" stroke="#8b5a2b" stroke-width="2"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MAIN GAME IDE SCREEN ================= -->
+        <div id="screen-game" class="absolute inset-0 z-30 hidden flex flex-col md:flex-row bg-slate-100">
+            
+            <!-- Left: Canvas Area (7x5 Grid) -->
+            <div class="w-full md:w-3/5 h-1/2 md:h-full bg-sky-400 relative flex flex-col shadow-xl z-10">
+                <!-- Top Info Bar -->
+                <div class="h-12 bg-white/20 backdrop-blur-sm border-b border-white/30 flex items-center justify-between px-4">
+                    <div class="font-bold text-white text-lg drop-shadow-md">
+                        ด่านที่ <span id="level-display">1</span>: <span id="level-title">Sequence</span>
+                    </div>
+                    <button onclick="Game.showScreen('map')" class="text-white hover:text-amber-200">
+                        <i class="fa-solid fa-map"></i> ออก
+                    </button>
+                </div>
+                
+                <!-- Canvas Container -->
+                <div class="flex-1 relative overflow-hidden flex items-center justify-center p-2 md:p-4">
+                    <!-- Clouds -->
+                    <div class="cloud w-32 h-10 top-[15%] opacity-60" style="animation-duration: 40s; left: -10%;">
+                        <div class="w-16 h-16 -top-8 left-4"></div><div class="w-12 h-12 -top-4 left-16"></div>
+                    </div>
+                    <canvas id="gameCanvas" width="700" height="500" class="max-w-full max-h-full bg-sky-500 shadow-2xl border-4 border-sky-300"></canvas>
+                </div>
+            </div>
+            
+            <!-- Right: Scratch Workspace -->
+            <div class="w-full md:w-2/5 h-1/2 md:h-full flex flex-col bg-white">
+                <!-- Toolbar -->
+                <div class="h-14 bg-slate-200 border-b border-slate-300 flex items-center justify-between px-4 shrink-0">
+                    <h3 class="font-bold text-slate-700"><i class="fa-solid fa-code"></i> พื้นที่เขียนโค้ด</h3>
+                    <div class="flex gap-2">
+                        <button onclick="BlockEngine.clearWorkspace()" class="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-bold shadow-[0_3px_0_#b91c1c] active:translate-y-[3px] active:shadow-none transition-all">ล้าง</button>
+                        <button onclick="GameEngine.runCode()" class="px-4 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-bold shadow-[0_3px_0_#15803d] active:translate-y-[3px] active:shadow-none transition-all"><i class="fa-solid fa-play"></i> รันโค้ด</button>
+                    </div>
+                </div>
+                
+                <!-- Split Panels -->
+                <div class="flex flex-1 overflow-hidden">
+                    <!-- Palette -->
+                    <div class="w-1/3 md:w-2/5 bg-slate-50 border-r border-slate-200 p-2 overflow-y-auto">
+                        <div class="text-xs text-slate-400 font-bold mb-2 uppercase tracking-wide">บล็อกคำสั่ง</div>
+                        
                         <div class="s-block motion" onclick="BlockEngine.addBlock('moveForward', 'motion', 'เดินหน้า 1 ช่อง')">
-                            เดินหน้า <i class="fa-solid fa-arrow-up"></i>
+                            เดินหน้า 1 ช่อง
                         </div>
-                        <div class="s-block motion" onclick="BlockEngine.addBlock('turnLeft', 'motion', 'หันซ้าย')">
-                            หันซ้าย <i class="fa-solid fa-rotate-left"></i>
+                        <div class="s-block motion" onclick="BlockEngine.addBlock('turnLeft', 'motion', 'หันซ้าย ↺')">
+                            หันซ้าย ↺
                         </div>
-                        <div class="s-block motion" onclick="BlockEngine.addBlock('turnRight', 'motion', 'หันขวา')">
-                            หันขวา <i class="fa-solid fa-rotate-right"></i>
-                        </div>
-                        
-                        <div id="palette-loop" class="s-block control hidden" onclick="BlockEngine.addBlock('loop', 'control', 'ทำซ้ำ 3 รอบ')">
-                            ทำซ้ำ 3 รอบ <i class="fa-solid fa-repeat"></i>
+                        <div class="s-block motion" onclick="BlockEngine.addBlock('turnRight', 'motion', 'หันขวา ↻')">
+                            หันขวา ↻
                         </div>
                         
-                        <div id="palette-if" class="s-block condition hidden" onclick="BlockEngine.addBlock('ifPath', 'condition', 'ถ้ามีทางเดิน')">
-                            ถ้ามีทาง <i class="fa-solid fa-code-branch"></i>
+                        <div id="palette-loop" class="s-block control hidden flex-col items-start gap-1" onclick="BlockEngine.addBlock('loop', 'control', 'ทำซ้ำ 3 รอบ')">
+                            ทำซ้ำ 3 รอบ
                         </div>
-                    </div>
-                </div>
-                
-                <!-- Editor Workspace -->
-                <div class="w-[60%] bg-white p-4 overflow-y-auto relative">
-                    <!-- Start Block -->
-                    <div class="bg-amber-400 text-amber-900 font-bold px-4 py-2 rounded-t-xl rounded-br-xl shadow-sm mb-1 text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-flag text-green-600"></i> เมื่อเริ่มเกมคลิกรัน
                     </div>
                     
-                    <!-- Dropzone for added blocks -->
-                    <div id="workspace-dropzone" class="min-h-[60%] pb-10">
-                        <!-- Blocks are injected here via JS -->
+                    <!-- Workspace Dropzone -->
+                    <div class="w-2/3 md:w-3/5 bg-white p-3 overflow-y-auto">
+                        <div class="s-block event mb-1 cursor-default opacity-80">
+                            <i class="fa-solid fa-flag text-green-700 mr-2"></i> เมื่อคลิกธงเขียว
+                        </div>
+                        <div id="workspace-dropzone" class="min-h-[200px] pb-10">
+                            <!-- Blocks appended here -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Screen: Result / Victory -->
-    <div id="screen-result" class="absolute inset-0 z-50 hidden flex flex-col items-center justify-center bg-slate-900/95 backdrop-blur-md">
-        <div class="glass-premium p-10 rounded-3xl w-[90%] max-w-lg text-center modal-animate relative overflow-hidden">
-            <!-- Confetti decoration -->
-            <div class="absolute -top-10 -left-10 text-5xl opacity-20"><i class="fa-solid fa-star"></i></div>
-            <div class="absolute bottom-10 -right-10 text-6xl opacity-20"><i class="fa-solid fa-coins"></i></div>
-            
-            <i class="fa-solid fa-trophy text-7xl text-yellow-400 mb-6 drop-shadow-[0_0_15px_rgba(250,204,21,0.6)]"></i>
-            <h1 class="text-4xl font-extrabold text-white mb-2">ยินดีด้วย!</h1>
-            <p class="text-sky-300 text-lg mb-8">คุณเคลียร์ภารกิจหนีออกจากเกาะโจรสลัดสำเร็จ!</p>
-            
-            <div class="bg-slate-800/50 rounded-2xl p-6 mb-8 border border-slate-600 flex justify-around">
-                <div class="text-center">
-                    <i class="fa-solid fa-star text-3xl text-amber-400 mb-2 block"></i>
-                    <span class="text-sm text-slate-400 block mb-1">ดาวที่ได้</span>
-                    <span id="res-stars" class="text-2xl font-bold text-white">0</span>
+        <!-- ================= TEACHER SCREEN ================= -->
+        <div id="screen-teacher" class="absolute inset-0 z-50 hidden flex items-center justify-center bg-slate-900/90 backdrop-blur-sm">
+            <div class="bg-white p-8 rounded-3xl w-full max-w-md mx-4 shadow-2xl modal-animate">
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 text-center"><i class="fa-solid fa-chalkboard-user"></i> โหมดคุณครู</h2>
+                
+                <div class="mb-4">
+                    <label class="block text-slate-600 font-bold mb-2">เวลาต่อคาบ (นาที): <span id="time-val" class="text-amber-500 text-xl">10</span></label>
+                    <input type="range" id="setting-time" min="5" max="20" step="5" value="10" class="w-full accent-amber-500" oninput="document.getElementById('time-val').innerText=this.value">
                 </div>
-                <div class="w-px bg-slate-600"></div>
-                <div class="text-center">
-                    <i class="fa-solid fa-coins text-3xl text-yellow-400 mb-2 block"></i>
-                    <span class="text-sm text-slate-400 block mb-1">เหรียญทอง</span>
-                    <span id="res-coins" class="text-2xl font-bold text-white">0</span>
+                
+                <div class="mb-6">
+                    <label class="block text-slate-600 font-bold mb-2">เปิดเสียงเอฟเฟกต์:</label>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="setting-sfx" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                    </label>
                 </div>
-            </div>
-            
-            <button onclick="Game.showScreen('map')" class="w-full py-4 bg-sky-500 hover:bg-sky-400 text-white rounded-xl font-bold text-lg shadow-lg transition transform hover:-translate-y-1">
-                กลับไปยังแผนที่
-            </button>
-        </div>
-    </div>
 
-    <!-- Universal Alert Modal -->
-    <div id="modal-overlay" class="absolute inset-0 z-[60] hidden flex justify-center items-center bg-black/60 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl p-6 max-w-sm w-[90%] text-center shadow-2xl modal-animate border-t-8 border-sky-500">
-            <div id="modal-icon" class="text-4xl text-sky-500 mb-4 mt-2">
-                <i class="fa-solid fa-circle-info"></i>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <button onclick="Game.saveSettings()" class="bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold shadow-[0_4px_0_#15803d] active:translate-y-[4px] active:shadow-none">บันทึก</button>
+                    <button onclick="Game.showScreen('splash')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 py-3 rounded-xl font-bold shadow-[0_4px_0_#94a3b8] active:translate-y-[4px] active:shadow-none">ปิด</button>
+                </div>
+                <button onclick="Game.resetData()" class="w-full bg-red-100 hover:bg-red-200 text-red-600 py-3 rounded-xl font-bold border border-red-300 mt-2"><i class="fa-solid fa-trash-can"></i> ล้างข้อมูลนักเรียนทั้งหมด</button>
             </div>
-            <h2 id="modal-title" class="text-2xl font-bold text-slate-800 mb-2">Title</h2>
-            <p id="modal-text" class="text-slate-600 mb-6 leading-relaxed">Message description goes here.</p>
-            <button onclick="UI.hideModal()" class="w-full py-3 bg-sky-500 hover:bg-sky-600 text-white rounded-xl font-bold transition">
-                เข้าใจแล้ว
-            </button>
         </div>
+
+        <!-- ================= MODALS ================= -->
+        <div id="modal-overlay" class="absolute inset-0 z-[100] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
+            <div class="bg-white p-6 rounded-3xl max-w-sm w-full mx-4 shadow-2xl modal-animate text-center relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-3 bg-amber-400"></div>
+                <div id="modal-icon" class="text-5xl mt-4 mb-4"><i class="fa-solid fa-circle-info text-sky-500"></i></div>
+                <h2 id="modal-title" class="text-2xl font-bold text-slate-800 mb-2">Title</h2>
+                <p id="modal-text" class="text-slate-600 mb-6 font-medium">Message text goes here.</p>
+                <button onclick="UI.hideModal()" class="w-full bg-amber-500 hover:bg-amber-600 text-white py-3 rounded-xl font-bold shadow-[0_4px_0_#b45309] active:translate-y-[4px] active:shadow-none transition-all text-lg">
+                    ตกลง
+                </button>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -406,126 +302,128 @@
          */
         const AudioEngine = {
             ctx: null,
-            ambientOsc: null,
             init() {
-                if(!this.ctx) {
-                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-                }
+                if(!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
             },
             play(type) {
                 if (!Game.settings.sfx) return;
                 this.init();
-                const now = this.ctx.currentTime;
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
+                const now = this.ctx.currentTime;
                 
-                if (type === 'click') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(600, now);
-                    osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
-                    gain.gain.setValueAtTime(0.3, now);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-                    osc.start(now); osc.stop(now + 0.1);
-                } 
-                else if (type === 'error') {
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(150, now);
-                    osc.frequency.exponentialRampToValueAtTime(100, now + 0.3);
-                    gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
-                    osc.start(now); osc.stop(now + 0.3);
-                }
-                else if (type === 'win') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(440, now);
-                    osc.frequency.setValueAtTime(554, now + 0.15);
-                    osc.frequency.setValueAtTime(659, now + 0.3);
-                    osc.frequency.setValueAtTime(880, now + 0.45);
-                    gain.gain.setValueAtTime(0.3, now);
-                    gain.gain.linearRampToValueAtTime(0.01, now + 0.8);
-                    osc.start(now); osc.stop(now + 0.8);
+                switch(type) {
+                    case 'click':
+                        osc.type = 'sine'; osc.frequency.setValueAtTime(600, now); osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
+                        gain.gain.setValueAtTime(0.3, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                        osc.start(now); osc.stop(now + 0.1);
+                        break;
+                    case 'coin':
+                        osc.type = 'square'; osc.frequency.setValueAtTime(1000, now); osc.frequency.setValueAtTime(1500, now + 0.1);
+                        gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                        osc.start(now); osc.stop(now + 0.3);
+                        break;
+                    case 'error':
+                        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(200, now); osc.frequency.exponentialRampToValueAtTime(100, now + 0.3);
+                        gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                        osc.start(now); osc.stop(now + 0.3);
+                        break;
+                    case 'win':
+                        osc.type = 'triangle'; osc.frequency.setValueAtTime(440, now); osc.frequency.setValueAtTime(554, now + 0.1); osc.frequency.setValueAtTime(659, now + 0.2); osc.frequency.setValueAtTime(880, now + 0.3);
+                        gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0.01, now + 0.6);
+                        osc.start(now); osc.stop(now + 0.6);
+                        break;
                 }
             }
         };
 
         /**
-         * LEVEL STRUCTURE DATA
-         * Grid: 7 cols, 5 rows.
-         * Types: 0=Water, 1=Island, 2=Start, 3=Treasure, 4=Shark, 5=Volcano
+         * LEVEL DATA (7x5 Grids)
+         * Grid Legend: 0=Water, 1=Path/Empty, 2=Start, 3=Treasure, 4=Shark, 5=Volcano
          */
         const LEVELS = [
-            { id: 1, title: 'ด่านที่ 1 - ลำดับการเดินเรือ (Sequence)', desc: 'ลากบล็อก "เดินหน้า" มาต่อกันเพื่อพาเรือโจรสลัดพุ่งตรงไปหาหีบสมบัติ!', type: 'sequence', grid: [
-                [0, 0, 1, 0, 0, 0, 0],
-                [0, 0, 1, 0, 3, 0, 0],
-                [0, 2, 0, 0, 0, 1, 0], // Boat at (1,2) -> Move 3 times -> Treasure at (4,1). Wait, start is 1,2. Treasure is 4,1.
-                [0, 0, 1, 1, 1, 0, 0], // Actually, let's make it a straight line for level 1.
-                [0, 0, 0, 0, 0, 0, 0]
-            ]},
-            { id: 2, title: 'ด่านที่ 2 - ลูปวังวนปริศนา (Loops)', desc: 'ใช้บล็อก "ทำซ้ำ 3 รอบ" และบล็อก "เดินหน้า" ข้างใน เพื่อไปให้ถึงเป้าหมายไวขึ้น', type: 'loop', grid: [
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 1, 0, 0, 0, 0, 0],
-                [0, 2, 0, 0, 3, 0, 0], // Start at (1,2) facing East. Treasure at (4,2). Distance = 3 cells.
-                [0, 0, 0, 4, 0, 5, 0],
-                [0, 0, 1, 0, 0, 0, 0]
-            ], palette: ['moveForward', 'turnRight', 'loop'] },
-            { id: 3, title: 'ด่านที่ 3 - หลบหลีกดงฉลาม (Condition)', desc: 'เดินอ้อมฉลามโดยใช้การ "หันซ้าย" และ "หันขวา" เพื่อหาทางไปสมบัติ', type: 'condition', grid: [
-                [0, 0, 5, 0, 0, 0, 0],
-                [0, 0, 1, 1, 0, 3, 0],
-                [0, 2, 0, 4, 0, 0, 0], // Shark blocking path
-                [0, 0, 0, 1, 1, 0, 0],
-                [0, 0, 0, 0, 5, 0, 0]
-            ], palette: ['moveForward', 'turnRight', 'turnLeft'] },
-            { id: 4, title: 'ด่านที่ 4 - การแก้ปัญหา (Debug)', desc: 'ลูกเรือเขียนโค้ดผิดพลาด! ลบบล็อกที่ทำให้เรือชนภูเขาไฟออก แล้วแก้ให้ถูกต้อง', type: 'debug', grid: [
-                [0, 0, 1, 0, 0, 0, 0],
-                [0, 5, 0, 5, 0, 3, 0], // Volcano trap
-                [0, 2, 0, 0, 0, 0, 0],
-                [0, 5, 0, 1, 0, 1, 0],
-                [0, 0, 0, 0, 0, 0, 0]
-            ], initialBlocks: ['moveForward', 'turnLeft', 'moveForward'], palette: ['moveForward', 'turnRight', 'turnLeft'] },
-            { id: 5, title: 'ด่านที่ 5 - บอสเกาะมรสุมอัคนี (Boss)', desc: 'ด่านสุดท้าย! คุมระบบนำร่องเพื่อหลบหลีกอันตรายทุกรูปแบบ!', type: 'boss', grid: [
-                [0, 1, 5, 0, 0, 4, 0],
-                [0, 4, 0, 0, 1, 0, 3],
-                [0, 2, 1, 0, 5, 0, 0],
-                [0, 0, 4, 0, 0, 1, 0],
-                [0, 1, 0, 5, 0, 0, 0]
-            ], palette: ['moveForward', 'turnRight', 'turnLeft', 'loop'] }
+            { 
+                id: 1, title: 'ลำดับขั้นตอน', 
+                desc: 'เรียงบล็อกคำสั่งเดินหน้า พาเรือโจรสลัดไปหาหีบสมบัติ!', 
+                palette: ['moveForward', 'turnRight', 'turnLeft'],
+                grid: [
+                    [0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0],
+                    [0,2,1,1,3,0,0],
+                    [0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0]
+                ] 
+            },
+            { 
+                id: 2, title: 'การทำซ้ำ (Loop)', 
+                desc: 'ไกลจังเลย! ลองใช้บล็อก "ทำซ้ำ 3 รอบ" เพื่อลดการใช้บล็อกเดินหน้าเยอะๆ สิ', 
+                palette: ['moveForward', 'turnRight', 'turnLeft', 'loop'],
+                grid: [
+                    [0,0,0,0,0,0,0],
+                    [0,5,0,0,0,3,0],
+                    [0,2,1,1,1,1,0],
+                    [0,0,0,4,0,5,0],
+                    [0,0,0,0,0,0,0]
+                ] 
+            },
+            { 
+                id: 3, title: 'ระวังฉลาม!', 
+                desc: 'หักหลบฉลามให้ดี! วางแผนเลี้ยวซ้ายขวาให้ถูกต้อง', 
+                palette: ['moveForward', 'turnRight', 'turnLeft'],
+                grid: [
+                    [0,0,0,0,0,0,0],
+                    [0,0,4,1,3,0,0],
+                    [0,2,1,1,0,0,0],
+                    [0,0,0,0,5,0,0],
+                    [0,0,0,0,0,0,0]
+                ] 
+            },
+            { 
+                id: 4, title: 'แก้ไขบั๊ก (Debug)', 
+                desc: 'แผนที่นี้โค้ดมาผิด! ลบบล็อกที่ผิดออก (กดปุ่ม X) แล้ววางแผนใหม่', 
+                initialBlocks: ['moveForward', 'turnRight', 'moveForward', 'moveForward'],
+                palette: ['moveForward', 'turnRight', 'turnLeft'],
+                grid: [
+                    [0,0,0,0,0,0,0],
+                    [0,0,1,1,1,0,0],
+                    [0,2,1,4,3,0,0],
+                    [0,0,5,0,0,0,0],
+                    [0,0,0,0,0,0,0]
+                ] 
+            },
+            { 
+                id: 5, title: 'เกาะมหาสมบัติ', 
+                desc: 'ด่านสุดท้าย! หลบทั้งฉลามและภูเขาไฟ ใช้ Loop ให้เป็นประโยชน์!', 
+                palette: ['moveForward', 'turnRight', 'turnLeft', 'loop'],
+                grid: [
+                    [0,0,0,0,3,0,0],
+                    [0,0,0,0,1,0,0],
+                    [0,2,1,1,1,5,0],
+                    [0,0,0,4,0,0,0],
+                    [0,0,0,0,0,0,0]
+                ] 
+            }
         ];
 
-        // Fix Level 1 grid for straight path
-        LEVELS[0].grid = [
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 1, 0, 0, 0, 0, 0],
-            [0, 2, 0, 0, 3, 0, 0], // Straight line: Start(1,2) to Treasure(4,2)
-            [0, 0, 1, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0]
-        ];
-        LEVELS[0].palette = ['moveForward']; // Simplify for level 1
-
-        /**
-         * GAME STATE CONTROLLER
-         */
         const Game = {
-            state: { unlockedLevel: 1, lives: 3, coins: 0, stars: 0, currentLevel: null },
-            settings: { timeLimit: 10, difficulty: 'medium', sfx: true },
+            state: { unlockedLevel: 1, lives: 3, coins: 0, currentLevel: null },
+            settings: { timeLimit: 10, sfx: true },
 
             init() {
                 this.loadData();
                 this.updateHUD();
+                document.getElementById('setting-time').value = this.settings.timeLimit;
+                document.getElementById('time-val').innerText = this.settings.timeLimit;
+                document.getElementById('setting-sfx').checked = this.settings.sfx;
             },
             
-            showScreen(screenId) {
+            showScreen(id) {
                 AudioEngine.play('click');
-                ['splash', 'teacher', 'map', 'game', 'result'].forEach(id => {
-                    document.getElementById(`screen-${id}`).classList.add('hidden');
-                });
-                document.getElementById(`screen-${screenId}`).classList.remove('hidden');
-                
-                if(screenId === 'map') this.renderMap();
-                if(screenId === 'game' && GameEngine.loopStarted) {
-                    GameEngine.draw(); // Force redraw if returning to game
-                }
+                document.querySelectorAll('#app > div').forEach(el => el.classList.add('hidden'));
+                document.getElementById(`screen-${id}`).classList.remove('hidden');
+                if(id === 'map') this.renderMap();
             },
 
             loadData() {
@@ -536,98 +434,69 @@
                     this.settings = parsed.settings || this.settings;
                 }
             },
-
-            saveData() {
-                localStorage.setItem('pirate_save_v2', JSON.stringify({ state: this.state, settings: this.settings }));
-            },
-
+            saveData() { localStorage.setItem('pirate_save_v2', JSON.stringify({ state: this.state, settings: this.settings })); },
             saveSettings() {
-                this.settings.difficulty = document.getElementById('setting-diff').value;
+                this.settings.timeLimit = parseInt(document.getElementById('setting-time').value);
                 this.settings.sfx = document.getElementById('setting-sfx').checked;
                 this.saveData();
-                this.showScreen('splash');
-                UI.showModal('สำเร็จ', 'บันทึกการตั้งค่าเรียบร้อยแล้ว', 'fa-circle-check text-green-500');
+                UI.showModal('สำเร็จ', 'บันทึกการตั้งค่าเรียบร้อยแล้ว', 'fa-check-circle text-green-500');
             },
-
             resetData() {
-                if(confirm("แน่ใจหรือไม่ว่าต้องการล้างข้อมูลนักเรียนทั้งหมด? (ข้อมูลดาวและเหรียญจะหายไป)")) {
+                if(confirm("ล้างข้อมูลทั้งหมด?")) {
                     localStorage.removeItem('pirate_save_v2');
                     location.reload();
                 }
             },
-
             updateHUD() {
                 document.getElementById('hud-lives').innerText = this.state.lives;
                 document.getElementById('hud-coins').innerText = this.state.coins;
-                document.getElementById('hud-stars').innerText = this.state.stars;
             },
 
             renderMap() {
                 for(let i=1; i<=5; i++) {
                     const node = document.getElementById(`node-${i}`);
-                    if(i <= this.state.unlockedLevel) {
-                        node.classList.remove('locked');
-                        node.classList.add('cursor-pointer');
-                    } else {
-                        node.classList.add('locked');
-                        node.classList.remove('cursor-pointer');
-                    }
+                    if(i <= this.state.unlockedLevel) node.classList.remove('locked');
+                    else node.classList.add('locked');
                 }
             },
 
-            startLevel(levelId) {
-                if(levelId > this.state.unlockedLevel) {
-                    AudioEngine.play('error');
-                    return;
-                }
+            startLevel(lvlId) {
+                if(lvlId > this.state.unlockedLevel) return;
+                this.state.currentLevel = LEVELS.find(l => l.id === lvlId);
                 
-                this.state.currentLevel = LEVELS.find(l => l.id === levelId);
-                document.getElementById('game-level-title').innerText = this.state.currentLevel.title;
+                document.getElementById('level-display').innerText = lvlId;
+                document.getElementById('level-title').innerText = this.state.currentLevel.title;
                 
-                // Configure Palette visibility
-                const palette = this.state.currentLevel.palette;
-                document.getElementById('palette-loop').classList.toggle('hidden', !palette.includes('loop'));
-                document.getElementById('palette-if').classList.toggle('hidden', !palette.includes('ifPath'));
-
+                // Toggle palette buttons
+                const pal = this.state.currentLevel.palette;
+                document.getElementById('palette-loop').classList.toggle('hidden', !pal.includes('loop'));
+                
                 BlockEngine.clearWorkspace();
                 
-                // Inject initial blocks for debugging level
-                if (this.state.currentLevel.type === 'debug') {
+                if (this.state.currentLevel.initialBlocks) {
                     this.state.currentLevel.initialBlocks.forEach(action => {
-                        let text = action === 'moveForward' ? 'เดินหน้า <i class="fa-solid fa-arrow-up"></i>' : (action === 'turnLeft' ? 'หันซ้าย <i class="fa-solid fa-rotate-left"></i>' : 'หันขวา <i class="fa-solid fa-rotate-right"></i>');
+                        let text = action === 'moveForward' ? 'เดินหน้า 1 ช่อง' : (action === 'turnLeft' ? 'หันซ้าย ↺' : 'หันขวา ↻');
                         BlockEngine.addBlock(action, 'motion', text);
                     });
                 }
-
-                // Show instruction modal
-                UI.showModal('ภารกิจด่านที่ ' + levelId, this.state.currentLevel.desc, 'fa-map text-amber-500', () => {
-                    GameEngine.initGrid(this.state.currentLevel.grid);
-                });
                 
+                UI.showModal(`ภารกิจที่ ${lvlId}`, this.state.currentLevel.desc, 'fa-map text-amber-600');
+                GameEngine.initGrid(this.state.currentLevel.grid);
                 this.showScreen('game');
             },
 
             levelComplete() {
                 AudioEngine.play('win');
-                this.state.stars += 1;
-                this.state.coins += (this.state.currentLevel.id * 10);
-                
+                this.state.coins += 100;
                 if(this.state.currentLevel.id === this.state.unlockedLevel && this.state.unlockedLevel < 5) {
                     this.state.unlockedLevel++;
                 }
-                
                 this.saveData();
                 this.updateHUD();
                 
-                if (this.state.currentLevel.id === 5) {
-                    document.getElementById('res-stars').innerText = this.state.stars;
-                    document.getElementById('res-coins').innerText = this.state.coins;
-                    setTimeout(() => this.showScreen('result'), 1000);
-                } else {
-                    UI.showModal('ยอดเยี่ยมมาก กัปตัน! 🎉', 'คุณพิชิตด่านนี้สำเร็จแล้ว!', 'fa-star text-yellow-400', () => {
-                        this.showScreen('map');
-                    });
-                }
+                UI.showModal('สุดยอด! 🎉', 'เจอหีบสมบัติแล้ว! เก่งมากๆ เลย', 'fa-gem text-sky-400', () => {
+                    this.showScreen('map');
+                });
             },
 
             loseLife() {
@@ -635,143 +504,101 @@
                 this.state.lives--;
                 this.updateHUD();
                 this.saveData();
-                
                 if(this.state.lives <= 0) {
-                    UI.showModal('เกมโอเวอร์ 💀', 'คุณสูญเสียหัวใจทั้งหมดแล้ว! กลับไปยังจุดเริ่มต้น!', 'fa-skull text-red-500', () => {
-                        this.state.lives = 3;
-                        this.state.coins = Math.floor(this.state.coins / 2); // lose half coins
-                        this.saveData();
-                        this.updateHUD();
-                        this.showScreen('map');
+                    UI.showModal('หัวใจหมดแล้ว 💔', 'แหม... ต้องกลับไปเริ่มหาแผนที่ใหม่นะ!', 'fa-skull-crossbones text-red-500', () => {
+                        this.state.lives = 3; this.state.coins = 0; this.state.unlockedLevel = 1;
+                        this.saveData(); this.showScreen('splash');
                     });
                 } else {
-                    UI.showModal('อ๊ะ ระวัง! 🌊', 'เรือเดินผิดทางหรือชนสิ่งกีดขวาง! ตรวจสอบโค้ดแล้วลองใหม่อีกครั้ง!', 'fa-triangle-exclamation text-orange-500', () => {
+                    UI.showModal('ระวังหน่อย!', 'เรือแล่นออกนอกเส้นทาง หรือชนฉลามเข้าแล้ว! ลองตรวจสอบโค้ดดูใหม่นะ', 'fa-triangle-exclamation text-red-500', () => {
                         GameEngine.resetPlayer();
                     });
                 }
             }
         };
 
-        /**
-         * BLOCK PALETTE ENGINE
-         */
         const BlockEngine = {
             addBlock(action, type, htmlContent) {
                 AudioEngine.play('click');
                 const dropzone = document.getElementById('workspace-dropzone');
-                
                 const el = document.createElement('div');
-                el.className = `s-block ${type}`;
+                el.className = `s-block workspace-block ${type} block-enter`;
                 el.dataset.action = action;
-                
-                el.innerHTML = `
-                    <span>${htmlContent}</span>
-                    <button class="delete-btn" onclick="BlockEngine.removeBlock(this, event)" title="ลบทิ้ง">
-                        <i class="fa-solid fa-xmark text-xs"></i>
-                    </button>
-                `;
+                el.innerHTML = `<span>${htmlContent}</span><button class="delete-btn" onclick="BlockEngine.removeBlock(this, event)"><i class="fa-solid fa-xmark text-white text-sm"></i></button>`;
                 dropzone.appendChild(el);
             },
-
             removeBlock(btn, event) {
                 event.stopPropagation();
                 AudioEngine.play('click');
-                btn.parentElement.remove();
+                const block = btn.parentElement;
+                block.style.transform = 'scale(0.8)';
+                block.style.opacity = '0';
+                setTimeout(() => block.remove(), 200);
             },
-
             clearWorkspace() {
                 document.getElementById('workspace-dropzone').innerHTML = '';
             },
-
             getSequence() {
-                const items = document.querySelectorAll('#workspace-dropzone .s-block');
-                return Array.from(items).map(item => item.dataset.action);
+                return Array.from(document.querySelectorAll('#workspace-dropzone .s-block')).map(el => el.dataset.action);
             }
         };
 
-        /**
-         * CANVAS GAME ENGINE (7x5 Grid rendering)
-         */
         const GameEngine = {
-            canvas: null,
-            ctx: null,
-            grid: [],
-            cols: 7,
-            rows: 5,
-            cellSize: 100, // Virtual pixel size
-            player: { x: 0, y: 0, dir: 1 }, // dir: 0=N, 1=E, 2=S, 3=W
+            canvas: null, ctx: null, grid: [], cols: 7, rows: 5, cellSize: 100,
+            player: { x: 0, y: 0, dir: 1, renderX: 0, renderY: 0 },
             startPos: { x: 0, y: 0, dir: 1 },
-            isRunning: false,
-            animTime: 0,
-            loopStarted: false,
+            isRunning: false, animTime: 0, loopStarted: false,
 
             initGrid(mapData) {
                 this.canvas = document.getElementById('gameCanvas');
                 this.ctx = this.canvas.getContext('2d');
                 this.grid = mapData;
                 
-                // Track start tile (value 2)
                 for(let r=0; r<this.rows; r++) {
                     for(let c=0; c<this.cols; c++) {
-                        if(this.grid[r][c] === 2) {
-                            this.startPos = { x: c, y: r, dir: 1 }; // Default face East
-                        }
+                        if(this.grid[r][c] === 2) this.startPos = { x: c, y: r, dir: 1 };
                     }
                 }
                 this.resetPlayer();
-                
-                if (!this.loopStarted) {
-                    this.loopStarted = true;
-                    this.animate();
-                }
+                if (!this.loopStarted) { this.loopStarted = true; this.animate(); }
             },
 
             resetPlayer() {
-                this.player = { ...this.startPos };
+                this.player = { ...this.startPos, renderX: this.startPos.x * this.cellSize, renderY: this.startPos.y * this.cellSize };
                 this.draw();
             },
 
             animate() {
                 this.animTime += 0.05;
-                if (!document.getElementById('screen-game').classList.contains('hidden')) {
-                    this.draw();
-                }
+                if(this.ctx) this.draw();
                 requestAnimationFrame(() => this.animate());
             },
 
             draw() {
-                // Background Sea
-                this.ctx.fillStyle = '#0369a1'; // sky-700
+                // Ocean Background
+                this.ctx.fillStyle = '#0ea5e9';
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-                // Grid Lines
-                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-                this.ctx.setLineDash([10, 10]);
+                // Grid Dashes
+                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+                this.ctx.setLineDash([5, 10]);
                 this.ctx.lineWidth = 2;
-                
-                for(let c = 0; c <= this.cols; c++) {
-                    this.ctx.beginPath(); this.ctx.moveTo(c * this.cellSize, 0); this.ctx.lineTo(c * this.cellSize, this.canvas.height); this.ctx.stroke();
-                }
-                for(let r = 0; r <= this.rows; r++) {
-                    this.ctx.beginPath(); this.ctx.moveTo(0, r * this.cellSize); this.ctx.lineTo(this.canvas.width, r * this.cellSize); this.ctx.stroke();
-                }
+                for(let c = 0; c <= this.cols; c++) { this.ctx.beginPath(); this.ctx.moveTo(c * this.cellSize, 0); this.ctx.lineTo(c * this.cellSize, this.canvas.height); this.ctx.stroke(); }
+                for(let r = 0; r <= this.rows; r++) { this.ctx.beginPath(); this.ctx.moveTo(0, r * this.cellSize); this.ctx.lineTo(this.canvas.width, r * this.cellSize); this.ctx.stroke(); }
                 this.ctx.setLineDash([]);
 
-                // Draw Entities based on grid
+                // Draw Entities (Map and Characters)
                 for(let r=0; r<this.rows; r++) {
                     for(let c=0; c<this.cols; c++) {
                         let type = this.grid[r][c];
                         let cx = c * this.cellSize + 50;
                         let cy = r * this.cellSize + 50;
 
-                        // Water waves animation
-                        if(type === 0 && (c+r)%3 === 0) {
-                            this.ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-                            this.ctx.beginPath();
-                            this.ctx.arc(cx + Math.sin(this.animTime+c)*10, cy, 20, 0, Math.PI);
-                            this.ctx.stroke();
+                        if(type === 0) { // Water sparkles
+                            this.ctx.fillStyle = 'rgba(255,255,255,0.4)';
+                            let bounce = Math.sin(this.animTime * 2 + c + r) * 3;
+                            this.ctx.beginPath(); this.ctx.arc(cx - 15, cy + bounce, 2, 0, Math.PI*2); this.ctx.arc(cx + 20, cy - bounce, 1.5, 0, Math.PI*2); this.ctx.fill();
                         }
-
                         if(type === 1 || type === 2 || type === 3) this.drawIsland(cx, cy);
                         if(type === 3) this.drawTreasure(cx, cy);
                         if(type === 4) this.drawShark(cx, cy);
@@ -779,274 +606,184 @@
                     }
                 }
 
-                // Draw Player Selection Box (Green Glow like reference image)
-                let px = this.player.x * this.cellSize;
-                let py = this.player.y * this.cellSize;
-                
-                this.ctx.strokeStyle = '#4ade80'; // Bright green
-                this.ctx.lineWidth = 4;
-                this.ctx.shadowBlur = 15;
-                this.ctx.shadowColor = '#4ade80';
-                this.ctx.strokeRect(px + 4, py + 4, this.cellSize - 8, this.cellSize - 8);
-                this.ctx.shadowBlur = 0; // reset
+                // Player Selection Highlight
+                this.ctx.strokeStyle = '#4ade80'; this.ctx.lineWidth = 4;
+                this.ctx.shadowBlur = 15; this.ctx.shadowColor = '#4ade80';
+                this.ctx.strokeRect(this.player.x * this.cellSize + 4, this.player.y * this.cellSize + 4, this.cellSize - 8, this.cellSize - 8);
+                this.ctx.shadowBlur = 0;
 
-                // Draw Player Boat
-                this.drawPirateBoat(px + 50, py + 50);
+                // Draw Boat (Using Tweened Coordinates for smoothness)
+                this.drawPirateBoat(this.player.renderX + 50, this.player.renderY + 50);
             },
 
             drawIsland(cx, cy) {
-                this.ctx.save();
-                this.ctx.translate(cx, cy);
+                this.ctx.save(); this.ctx.translate(cx, cy);
+                this.ctx.fillStyle = '#fcd34d'; this.ctx.beginPath(); this.ctx.ellipse(0, 8, 38, 22, 0, 0, Math.PI*2); this.ctx.fill();
+                this.ctx.fillStyle = '#fbbf24'; this.ctx.beginPath(); this.ctx.ellipse(0, 4, 32, 16, 0, 0, Math.PI*2); this.ctx.fill();
                 
-                // Sand Base
-                this.ctx.fillStyle = '#fcd34d'; // amber-300
-                this.ctx.beginPath(); this.ctx.ellipse(0, 10, 35, 20, 0, 0, Math.PI*2); this.ctx.fill();
-                this.ctx.fillStyle = '#fbbf24'; // amber-400
-                this.ctx.beginPath(); this.ctx.ellipse(0, 5, 30, 15, 0, 0, Math.PI*2); this.ctx.fill();
-
-                // Simple Palm Tree
-                this.ctx.strokeStyle = '#78350f'; this.ctx.lineWidth = 4;
-                this.ctx.beginPath(); this.ctx.moveTo(0, 5); this.ctx.quadraticCurveTo(-10, -15, -5, -30); this.ctx.stroke();
-                
-                this.ctx.fillStyle = '#22c55e'; // green-500
+                // Palm tree
+                this.ctx.strokeStyle = '#78350f'; this.ctx.lineWidth = 5; this.ctx.lineCap = 'round';
+                this.ctx.beginPath(); this.ctx.moveTo(0, 5); this.ctx.quadraticCurveTo(-10, -15, -5, -25); this.ctx.stroke();
+                this.ctx.fillStyle = '#22c55e';
                 [-15, 0, 15].forEach(angle => {
-                    this.ctx.save();
-                    this.ctx.translate(-5, -30);
-                    this.ctx.rotate(angle * Math.PI/180);
-                    this.ctx.beginPath(); this.ctx.ellipse(10, 0, 15, 5, 0, 0, Math.PI*2); this.ctx.fill();
-                    this.ctx.restore();
+                    this.ctx.save(); this.ctx.translate(-5, -25); this.ctx.rotate(angle * Math.PI/180);
+                    this.ctx.beginPath(); this.ctx.ellipse(12, 0, 16, 6, 0, 0, Math.PI*2); this.ctx.fill(); this.ctx.restore();
                 });
-                
+                this.ctx.fillStyle = '#78350f'; this.ctx.beginPath(); this.ctx.arc(-3, -20, 4, 0, Math.PI*2); this.ctx.fill(); this.ctx.beginPath(); this.ctx.arc(4, -18, 4, 0, Math.PI*2); this.ctx.fill();
                 this.ctx.restore();
             },
 
             drawTreasure(cx, cy) {
-                this.ctx.save();
-                this.ctx.translate(cx, cy);
+                this.ctx.save(); this.ctx.translate(cx, cy);
+                let floatOffset = Math.sin(this.animTime * 4) * 4;
                 
-                // Glow
-                this.ctx.fillStyle = `rgba(250, 204, 21, ${0.5 + Math.sin(this.animTime*5)*0.2})`;
-                this.ctx.beginPath(); this.ctx.arc(0, -10, 40, 0, Math.PI*2); this.ctx.fill();
-
-                // Chest Body
-                this.ctx.fillStyle = '#b45309'; this.ctx.fillRect(-20, -15, 40, 25); // amber-700
-                this.ctx.fillStyle = '#d97706'; this.ctx.fillRect(-16, -11, 32, 21); // amber-600
+                this.ctx.fillStyle = `rgba(250, 204, 21, ${0.4 + Math.sin(this.animTime*5)*0.3})`;
+                this.ctx.beginPath(); this.ctx.arc(0, -10 + floatOffset, 45, 0, Math.PI*2); this.ctx.fill();
+                this.ctx.translate(0, floatOffset);
                 
-                // Lid
-                this.ctx.fillStyle = '#92400e'; // amber-800
-                this.ctx.beginPath(); this.ctx.arc(0, -15, 20, Math.PI, 0); this.ctx.fill();
-                
-                // Gold trim
-                this.ctx.fillStyle = '#fde047'; // yellow-300
-                this.ctx.fillRect(-22, -15, 44, 4);
-                this.ctx.fillRect(-5, -12, 10, 8); // Lock
-
+                this.ctx.fillStyle = '#b45309'; this.ctx.beginPath(); this.ctx.roundRect(-20, -10, 40, 22, 4); this.ctx.fill();
+                this.ctx.fillStyle = '#d97706'; this.ctx.beginPath(); this.ctx.roundRect(-16, -6, 32, 14, 2); this.ctx.fill();
+                this.ctx.fillStyle = '#92400e'; this.ctx.beginPath(); this.ctx.arc(0, -10, 20, Math.PI, 0); this.ctx.fill();
+                this.ctx.fillStyle = '#fde047'; this.ctx.fillRect(-22, -10, 44, 4);
+                this.ctx.beginPath(); this.ctx.arc(0, -8, 6, 0, Math.PI*2); this.ctx.fill();
+                this.ctx.fillStyle = '#1e293b'; this.ctx.beginPath(); this.ctx.arc(0, -8, 2, 0, Math.PI*2); this.ctx.fill();
                 this.ctx.restore();
             },
 
             drawShark(cx, cy) {
-                this.ctx.save();
-                this.ctx.translate(cx, cy);
-                
-                let bob = Math.sin(this.animTime * 3) * 5;
-                
-                // Water shadow
-                this.ctx.fillStyle = 'rgba(0,0,0,0.3)';
-                this.ctx.beginPath(); this.ctx.ellipse(0, 15+bob, 25, 8, 0, 0, Math.PI*2); this.ctx.fill();
-
-                // Fin
-                this.ctx.fillStyle = '#64748b'; // slate-500
-                this.ctx.beginPath();
-                this.ctx.moveTo(-15, 15+bob);
-                this.ctx.quadraticCurveTo(0, -25+bob, 15, 15+bob);
-                this.ctx.fill();
-
+                this.ctx.save(); this.ctx.translate(cx, cy);
+                let bob = Math.sin(this.animTime * 3) * 6;
+                this.ctx.strokeStyle = 'rgba(255,255,255,0.6)'; this.ctx.lineWidth = 2;
+                this.ctx.beginPath(); this.ctx.ellipse(0, 15+bob, 22, 6, 0, 0, Math.PI*2); this.ctx.stroke();
+                this.ctx.fillStyle = '#94a3b8';
+                this.ctx.beginPath(); this.ctx.moveTo(-15, 15+bob); this.ctx.quadraticCurveTo(0, -25+bob, 15, 15+bob); this.ctx.fill();
+                this.ctx.fillStyle = '#cbd5e1';
+                this.ctx.beginPath(); this.ctx.moveTo(-8, 15+bob); this.ctx.quadraticCurveTo(2, -15+bob, 8, 15+bob); this.ctx.fill();
                 this.ctx.restore();
             },
 
             drawVolcano(cx, cy) {
-                this.ctx.save();
-                this.ctx.translate(cx, cy);
-                
-                // Base
-                this.ctx.fillStyle = '#475569'; // slate-600
-                this.ctx.beginPath();
-                this.ctx.moveTo(-35, 25); this.ctx.lineTo(35, 25);
-                this.ctx.lineTo(15, -20); this.ctx.lineTo(-15, -20);
-                this.ctx.fill();
-
-                // Lava
-                this.ctx.fillStyle = '#ef4444'; // red-500
-                this.ctx.beginPath();
-                this.ctx.moveTo(-15, -20); this.ctx.lineTo(15, -20);
-                this.ctx.lineTo(20, -5); this.ctx.lineTo(10, -10);
-                this.ctx.lineTo(0, 5); this.ctx.lineTo(-10, -5);
-                this.ctx.lineTo(-20, 0);
-                this.ctx.fill();
-
+                this.ctx.save(); this.ctx.translate(cx, cy);
+                this.ctx.fillStyle = '#475569'; 
+                this.ctx.beginPath(); this.ctx.moveTo(-30, 20); this.ctx.quadraticCurveTo(0, -10, 20, -15); this.ctx.lineTo(-20, -15); this.ctx.quadraticCurveTo(0, -10, 30, 20); this.ctx.fill();
+                this.ctx.beginPath(); this.ctx.ellipse(0, 20, 30, 10, 0, 0, Math.PI*2); this.ctx.fill();
+                this.ctx.fillStyle = '#fb923c';
+                this.ctx.beginPath(); this.ctx.moveTo(-15, -15); this.ctx.quadraticCurveTo(0, 0, 15, -15); this.ctx.lineTo(8, -5); this.ctx.lineTo(0, -10); this.ctx.lineTo(-8, -5); this.ctx.fill();
+                let smokeFloat = (this.animTime * 15) % 30;
+                this.ctx.fillStyle = `rgba(203, 213, 225, ${1 - smokeFloat/30})`;
+                this.ctx.beginPath(); this.ctx.arc(-5, -25 - smokeFloat, 8, 0, Math.PI*2); this.ctx.fill();
+                this.ctx.beginPath(); this.ctx.arc(8, -20 - smokeFloat*1.2, 6, 0, Math.PI*2); this.ctx.fill();
                 this.ctx.restore();
             },
 
             drawPirateBoat(cx, cy) {
-                this.ctx.save();
-                this.ctx.translate(cx, cy);
-                
-                // Rotate based on direction
+                this.ctx.save(); this.ctx.translate(cx, cy);
                 this.ctx.rotate((this.player.dir * 90 - 90) * Math.PI / 180);
-                
-                // Bobbing animation
-                this.ctx.translate(0, Math.sin(this.animTime * 4) * 3);
+                this.ctx.translate(0, Math.sin(this.animTime * 6) * 4); // Bounce
 
-                // Boat Body (Top down look)
-                this.ctx.fillStyle = '#78350f'; // amber-900
-                this.ctx.beginPath();
-                this.ctx.moveTo(-35, -20);
-                this.ctx.quadraticCurveTo(35, -25, 45, 0); // Bow (front)
-                this.ctx.quadraticCurveTo(35, 25, -35, 20); // Stern (back)
-                this.ctx.closePath();
-                this.ctx.fill();
+                this.ctx.fillStyle = '#8b5a2b'; this.ctx.beginPath(); this.ctx.ellipse(0, 0, 32, 22, 0, 0, Math.PI*2); this.ctx.fill();
+                this.ctx.fillStyle = '#a0522d'; this.ctx.beginPath(); this.ctx.ellipse(0, 0, 22, 12, 0, 0, Math.PI*2); this.ctx.fill();
                 
-                this.ctx.fillStyle = '#b45309'; // inner deck
-                this.ctx.beginPath();
-                this.ctx.moveTo(-30, -15);
-                this.ctx.quadraticCurveTo(30, -18, 35, 0); 
-                this.ctx.quadraticCurveTo(30, 18, -30, 15);
-                this.ctx.fill();
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.beginPath(); this.ctx.moveTo(-5, 0); this.ctx.quadraticCurveTo(15, -25, 25, 0); this.ctx.quadraticCurveTo(15, 25, -5, 0); this.ctx.fill();
+                this.ctx.strokeStyle = '#e5e7eb'; this.ctx.lineWidth = 2; this.ctx.stroke();
 
-                // Chibi Pirate Character
-                // Body (Striped shirt)
-                this.ctx.fillStyle = '#ef4444'; this.ctx.fillRect(-15, -12, 18, 24);
-                this.ctx.fillStyle = '#ffffff'; this.ctx.fillRect(-15, -6, 18, 4); this.ctx.fillRect(-15, 6, 18, 4);
-                
-                // Head
-                this.ctx.fillStyle = '#fde68a'; // skin
-                this.ctx.beginPath(); this.ctx.arc(-2, 0, 12, 0, Math.PI*2); this.ctx.fill();
-                
-                // Pirate Hat (Bicorne)
-                this.ctx.fillStyle = '#1e293b'; // dark
-                this.ctx.beginPath();
-                this.ctx.moveTo(-20, -8); this.ctx.quadraticCurveTo(0, -25, 12, -8); this.ctx.fill();
-                this.ctx.beginPath();
-                this.ctx.moveTo(-20, 8); this.ctx.quadraticCurveTo(0, 25, 12, 8); this.ctx.fill();
-
+                this.ctx.fillStyle = '#1e293b';
+                this.ctx.beginPath(); this.ctx.arc(8, 0, 3.5, 0, Math.PI*2); this.ctx.fill();
+                this.ctx.fillRect(6, 3, 4, 2.5);
                 this.ctx.restore();
             },
 
             async runCode() {
                 if(this.isRunning) return;
                 let seq = BlockEngine.getSequence();
-                
-                if(seq.length === 0) {
-                    UI.showModal('พื้นที่ว่างเปล่า!', 'คุณยังไม่ได้วางบล็อกคำสั่งเลย ลากบล็อกมาวางเพื่อสั่งการเรือนะ!', 'fa-circle-question text-sky-500');
-                    return;
-                }
+                if(seq.length === 0) return UI.showModal('ว่างเปล่า!', 'ลากบล็อกมาวางเพื่อสั่งงานก่อนนะ', 'fa-info-circle text-sky-500');
                 
                 this.isRunning = true;
                 this.resetPlayer();
 
-                // Pre-process loops
                 let expandedSeq = [];
                 for(let i=0; i<seq.length; i++) {
-                    if(seq[i] === 'loop') {
-                        // Takes the next single block and repeats it 3 times
-                        if(seq[i+1]) {
-                            expandedSeq.push(seq[i+1], seq[i+1], seq[i+1]);
-                            i++; // skip the duplicated block
-                        }
-                    } else {
+                    if(seq[i] === 'loop' && seq[i+1]) {
+                        expandedSeq.push(seq[i+1], seq[i+1], seq[i+1]); i++;
+                    } else if(seq[i] !== 'loop') {
                         expandedSeq.push(seq[i]);
                     }
                 }
 
-                // Execute sequence
                 for(let action of expandedSeq) {
-                    await this.delay(600); // Wait 0.6s per step
-                    this.executeAction(action);
-                    this.draw(); // Immediate redraw
-                    
+                    await this.executeAction(action);
                     let status = this.checkStatus();
-                    if(status === 'win') {
-                        this.isRunning = false;
-                        Game.levelComplete();
-                        return;
-                    } else if(status === 'lose') {
-                        this.isRunning = false;
-                        Game.loseLife();
-                        return;
-                    }
+                    if(status === 'win') { this.isRunning = false; Game.levelComplete(); return; } 
+                    else if(status === 'lose') { this.isRunning = false; Game.loseLife(); return; }
                 }
 
-                // If code finishes but didn't reach treasure
                 this.isRunning = false;
                 if(this.grid[this.player.y][this.player.x] !== 3) {
-                    UI.showModal('ยังไม่ถึงเป้าหมาย ⚓', 'เรือแล่นโค้ดจนจบแล้ว แต่มันยังไม่ถึงสมบัติเลย! ลองคิดแผนการเดินเรือใหม่นะ', 'fa-compass text-amber-500', () => {
-                        this.resetPlayer();
-                    });
+                    UI.showModal('ยังไม่ถึง!', 'โค้ดจบแล้วแต่เรือยังไม่ถึงสมบัติ ลองคิดแผนใหม่นะ', 'fa-compass text-amber-500', () => this.resetPlayer());
                 }
             },
 
             executeAction(action) {
-                AudioEngine.play('click');
-                if(action === 'turnLeft') {
-                    this.player.dir = (this.player.dir - 1 + 4) % 4;
-                } else if(action === 'turnRight') {
-                    this.player.dir = (this.player.dir + 1) % 4;
-                } else if(action === 'moveForward') {
-                    if(this.player.dir === 0) this.player.y--; // N
-                    else if(this.player.dir === 1) this.player.x++; // E
-                    else if(this.player.dir === 2) this.player.y++; // S
-                    else if(this.player.dir === 3) this.player.x--; // W
-                }
+                return new Promise(async (resolve) => {
+                    AudioEngine.play('click');
+                    if(action === 'turnLeft') { this.player.dir = (this.player.dir + 3) % 4; await this.delay(300); resolve(); }
+                    else if(action === 'turnRight') { this.player.dir = (this.player.dir + 1) % 4; await this.delay(300); resolve(); }
+                    else if(action === 'moveForward') {
+                        let tx = this.player.x, ty = this.player.y;
+                        if(this.player.dir === 0) ty--; else if(this.player.dir === 1) tx++; else if(this.player.dir === 2) ty++; else if(this.player.dir === 3) tx--;
+                        this.player.x = tx; this.player.y = ty;
+                        await this.tweenPlayer(tx, ty, 400);
+                        resolve();
+                    }
+                });
+            },
+
+            tweenPlayer(gx, gy, dur) {
+                return new Promise(res => {
+                    let sx = this.player.renderX, sy = this.player.renderY;
+                    let ex = gx * this.cellSize, ey = gy * this.cellSize;
+                    let start = performance.now();
+                    let anim = (time) => {
+                        let p = Math.min((time - start) / dur, 1);
+                        // Smooth easing function (easeInOutQuad)
+                        let ease = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+                        this.player.renderX = sx + (ex - sx) * ease; 
+                        this.player.renderY = sy + (ey - sy) * ease;
+                        if(p < 1) requestAnimationFrame(anim); else { this.player.renderX = ex; this.player.renderY = ey; res(); }
+                    };
+                    requestAnimationFrame(anim);
+                });
             },
 
             checkStatus() {
-                let x = this.player.x;
-                let y = this.player.y;
-                
-                // Out of Grid Boundary
-                if(x < 0 || x >= this.cols || y < 0 || y >= this.rows) return 'lose';
-                
-                let tile = this.grid[y][x];
-                // Obstacles: 4(Shark), 5(Volcano) 
-                // Note: tile 1 is Island base, we assume boat crashes if it lands directly on non-treasure island tile.
-                if(tile === 1 || tile === 4 || tile === 5) return 'lose';
-                
-                if(tile === 3) return 'win'; // Treasure reached
-                
+                let x = this.player.x, y = this.player.y;
+                if(x<0 || x>=this.cols || y<0 || y>=this.rows) return 'lose';
+                let t = this.grid[y][x];
+                if(t===0 || t===4 || t===5) return 'lose';
+                if(t===3) return 'win';
                 return 'continue';
             },
-
-            delay(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
+            delay(ms) { return new Promise(res => setTimeout(res, ms)); }
         };
 
-        /**
-         * UI CONTROLS
-         */
         const UI = {
-            callback: null,
-            showModal(title, text, iconClass = 'fa-circle-info text-sky-500', onClose = null) {
+            cb: null,
+            showModal(title, text, iconClass, onClose) {
                 document.getElementById('modal-title').innerText = title;
                 document.getElementById('modal-text').innerText = text;
                 document.getElementById('modal-icon').innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
                 document.getElementById('modal-overlay').classList.remove('hidden');
-                this.callback = onClose;
+                this.cb = onClose;
             },
             hideModal() {
                 AudioEngine.play('click');
                 document.getElementById('modal-overlay').classList.add('hidden');
-                if(this.callback) {
-                    this.callback();
-                    this.callback = null;
-                }
+                if(this.cb) { this.cb(); this.cb = null; }
             }
         };
 
-        // Bootstrap the application
-        window.onload = () => {
-            Game.init();
-        };
+        window.onload = () => Game.init();
     </script>
 </body>
 </html>
